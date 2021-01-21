@@ -2350,6 +2350,9 @@ function ReconfigGear(X2ItemTemplate Template, int Difficulty)
 	local delegate<X2StrategyGameRulesetDataStructures.SpecialRequirementsDelegate> SpecialRequirement;
 	local X2Effect_Persistent Effect;
 	local UIStatMarkup Markup;
+	local X2Effect	GrenadeEffect;
+	local X2Effect_PersistentStatChange	PersistentStatChangeEffect;
+	
 	// Reconfig Weapons and Weapon Schematics
 	WeaponTemplate = X2WeaponTemplate(Template);
 	if (WeaponTemplate != none)
@@ -2838,6 +2841,33 @@ function ReconfigGear(X2ItemTemplate Template, int Difficulty)
 				default :
 					break;
 			}
+					
+			if (GrenadeTemplate.DataName == 'EMPGrenadeMk2' || GrenadeTemplate.DataName == 'EMPGrenade')
+			{
+				foreach GrenadeTemplate.ThrownGrenadeEffects(GrenadeEffect)
+				{
+					PersistentStatChangeEffect = X2Effect_PersistentStatChange(GrenadeEffect);
+					if (PersistentStatChangeEffect != none)
+					{
+						if (PersistentStatChangeEffect.IconImage == "")
+						{
+							PersistentStatChangeEffect.IconImage = "UILibrary_Common.TargetIcons.Hack_robot_icon";
+						}						
+					}
+				}
+				
+				foreach GrenadeTemplate.LaunchedGrenadeEffects(GrenadeEffect)
+				{
+					PersistentStatChangeEffect = X2Effect_PersistentStatChange(GrenadeEffect);
+					if (PersistentStatChangeEffect != none)
+					{
+						if (PersistentStatChangeEffect.IconImage == "")
+						{
+							PersistentStatChangeEffect.IconImage = "UILibrary_Common.TargetIcons.Hack_robot_icon";
+						}
+					}
+				}
+			}				
 		}
 
 		AmmoTemplate = X2AmmoTemplate(Template);
@@ -2860,6 +2890,21 @@ function ReconfigGear(X2ItemTemplate Template, int Difficulty)
 					if (AmmoTemplate.TargetEffects[k].IsA ('X2Effect_PersistentStatChange'))
 					{
 						AmmoTemplate.TargetEffects[k].ApplyChance = default.VENOM_ROUNDS_APPLY_CHANCE;
+					}
+				}
+			}
+			
+			if (AmmoTemplate.DataName == 'BluescreenRounds')
+			{
+				for (k = 0; k < AmmoTemplate.TargetEffects.length; k++)
+				{
+					if (AmmoTemplate.TargetEffects[k].IsA ('X2Effect_PersistentStatChange'))
+					{
+						PersistentStatChangeEffect = X2Effect_PersistentStatChange(AmmoTemplate.TargetEffects[k]);
+						if (PersistentStatChangeEffect.IconImage == "")
+						{
+							PersistentStatChangeEffect.IconImage = "UILibrary_Common.TargetIcons.Hack_robot_icon";
+						}
 					}
 				}
 			}
