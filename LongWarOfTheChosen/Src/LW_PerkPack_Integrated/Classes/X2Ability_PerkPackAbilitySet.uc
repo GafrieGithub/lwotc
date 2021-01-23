@@ -2806,7 +2806,9 @@ static function X2AbilityTemplate AddInterferenceAbility()
 	
 	Template.PostActivationEvents.AddItem('ItemRecalled');
 	Template.CustomSelfFireAnim = 'NO_CombatProtocol';
-	Template.CinescriptCameraType = "Specialist_CombatProtocol";
+	//If you are using Zip mode, the default camera for "Specialist_CombatProtocol" shows a close-up of your Specialist, 
+	//but by the time the camera moves away, the animation is already finished.
+	//Template.CinescriptCameraType = "Specialist_CombatProtocol";
 	Template.BuildNewGameStateFn = class'X2Ability_SpecialistAbilitySet'.static.AttachGremlinToTarget_BuildGameState;
 	Template.BuildVisualizationFn = class'X2Ability_SpecialistAbilitySet'.static.GremlinSingleTarget_BuildVisualization;
 	
